@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
@@ -14,6 +15,8 @@ public class GameController : MonoBehaviour
 
     IDice obj;
     Vector3 hitP = Vector3.zero;
+
+    public List<IDice> playerDiceList = new List<IDice>();
 
     private void Awake()
     {
@@ -49,7 +52,7 @@ public class GameController : MonoBehaviour
                 {
                     if (hit.collider.TryGetComponent(out obj))
                     {
-                        obj.OnClick(true);
+                        obj.OnClick();
                     }
                 }    
             }
@@ -57,7 +60,16 @@ public class GameController : MonoBehaviour
         }
     }
 
-
+    public void PlayDice(bool player)
+    {
+        if(player)
+        {
+            foreach (var dice in playerDiceList)
+            {
+                dice.ChangeState(DiceState.playing);
+            }
+        }
+    }
 
     public static void BuildLevel(int level)
     {
@@ -87,5 +99,14 @@ public class GameController : MonoBehaviour
     public static void DiceSelect()
     {
         instance.obj?.OnSelect();
+    }
+
+    public static void AddPlayerDice(IDice dice)
+    {
+        instance.playerDiceList.Add(dice);
+    }
+    public static void RemovePlayerDice(IDice dice)
+    {
+        instance.playerDiceList.Remove(dice);
     }
 }

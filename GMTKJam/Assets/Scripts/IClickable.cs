@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IClickable
 {
-    public void OnClick(bool on);
+    public void OnClick();
     
 }

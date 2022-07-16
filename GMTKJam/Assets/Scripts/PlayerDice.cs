@@ -21,7 +21,7 @@ public class PlayerDice : MonoBehaviour, IDice
 
     private Rigidbody rb;
     private BoxCollider cl;
-    DiceState state = DiceState.idle;
+    DiceState state = DiceState.playing;
     public bool selected;
 
     // Start is called before the first frame update
@@ -55,7 +55,6 @@ public class PlayerDice : MonoBehaviour, IDice
             cl.isTrigger = true;
             transform.DOMove(selectedPoint, speed);
             transform.DORotateQuaternion(faces[0].look, speed);
-
         }
         else if (state == DiceState.playing)
         {
@@ -68,14 +67,17 @@ public class PlayerDice : MonoBehaviour, IDice
             rb.AddForce(dir * force, ForceMode.VelocityChange);
             rb.AddTorque(new Vector3(Random.Range(-50, 50), Random.Range(-50, 50), Random.Range(-50, 50)));
         }
+
+        this.state = state;
     }
 
-    public void OnClick(bool on)
+    public void OnClick()
     {
         if (state == DiceState.playing)
         {
+            state = DiceState.idle;
             GameController.ShowSelection();
-            selected = on;
+            //selected = on;
         }
     }
 
