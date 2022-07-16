@@ -8,19 +8,21 @@ public enum DiceState
     idle,
     playing
 }
-public class DiceScript : MonoBehaviour
+public class PlayerDice : MonoBehaviour, IDice
 {
-    [SerializeField] Vector3[] faces;
+    //[SerializeField] Vector3[] faces;
+    [SerializeField] Face[] faces;
 
     //private DiceState state = DiceState.idle;
     [SerializeField] Vector3 selectedPoint;
     [SerializeField] float speed;
     float force;
 
-    bool returnDice = true;
 
     private Rigidbody rb;
     private BoxCollider cl;
+    DiceState state = DiceState.idle;
+    public bool selected;
 
     // Start is called before the first frame update
     void Start()
@@ -32,15 +34,15 @@ public class DiceScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            ChangeState(DiceState.idle);
-        }
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    ChangeState(DiceState.idle);
+        //}
 
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            ChangeState(DiceState.playing);
-        }
+        //if(Input.GetKeyDown(KeyCode.A))
+        //{
+        //    ChangeState(DiceState.playing);
+        //}
         
     }
     
@@ -49,11 +51,10 @@ public class DiceScript : MonoBehaviour
     {
         if (state == DiceState.idle)
         {
-
             rb.isKinematic = true;
             cl.isTrigger = true;
             transform.DOMove(selectedPoint, speed);
-            transform.DORotate(faces[0], speed);
+            transform.DORotateQuaternion(faces[0].look, speed);
 
         }
         else if (state == DiceState.playing)
@@ -69,4 +70,20 @@ public class DiceScript : MonoBehaviour
         }
     }
 
+    public void OnClick(bool on)
+    {
+        if (state == DiceState.playing)
+        {
+            GameController.ShowSelection();
+            selected = on;
+        }
+    }
+
+    public void OnSelect()
+    {
+        //if(selected)
+        ChangeState(DiceState.idle);
+
+
+    }
 }
