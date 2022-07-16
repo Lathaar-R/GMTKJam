@@ -16,6 +16,7 @@ public enum FaceType
 public class Face : ScriptableObject
 {
     public FaceType faceType;
+    public int faceNum;
     public int value;
     //public int pos;
     public Quaternion look;

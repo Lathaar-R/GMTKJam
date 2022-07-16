@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Select
+  - face
   layers:
   - Default
   - TransparentFX
@@ -12,8 +13,8 @@ TagManager:
   - Dice
   - Water
   - UI
-  - 
-  - 
+  - Ignore
+  - Chao
   - 
   - 
   - 

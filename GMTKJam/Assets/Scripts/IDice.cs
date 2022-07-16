@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IDice : IClickable
 {
-    void OnSelect();
+    void OnSelect(GameObject face);
 
     public void ChangeState(DiceState state);
 

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Atack 1
   m_EditorClassIdentifier: 
   faceType: 0
+  faceNum: 0
   value: 1
-  look: {x: 0.4617486, y: 0, z: 0, w: 0.8870108}
+  look: {x: -0.000000031705696, y: -0.8870106, z: -0.46174908, w: 0.000000044770445}
+  faceSprite: {fileID: 0}

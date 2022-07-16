@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     IDice obj;
     Vector3 hitP = Vector3.zero;
 
-    public List<IDice> playerDiceList = new List<IDice>();
+    public List<PlayerDice> playerDiceList = new List<PlayerDice>();
 
     private void Awake()
     {
@@ -27,13 +27,18 @@ public class GameController : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
             var scp = diceCam.ScreenToWorldPoint(Input.mousePosition);
 
-            if (Physics.Raycast(scp, diceCam.transform.forward, out hit, 50f, 1 << 3))
+            if (Physics.Raycast(scp, diceCam.transform.forward, out hit, 50f, (1 << 3) | (1 << 7)))
             {
                 //Debug.DrawLine(scp, hit.point, Color.green, 2);
                 hitP = hit.point;
@@ -43,7 +48,8 @@ public class GameController : MonoBehaviour
                     if(hit.collider.CompareTag("Select"))
                     {
                         //Debug.Log("a");
-                        DiceSelect();
+                        var upFace = CheckFace();
+                        DiceSelect(upFace);
                     }
                     obj = null;
                     HideSelection();
@@ -71,15 +77,27 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public static GameObject CheckFace()
+    {
+        GameObject[] faces = GameObject.FindGameObjectsWithTag("face");
+
+        GameObject nearFace = faces[0].gameObject;
+        foreach (var face in faces)
+        {
+            if((Camera.main.transform.position - face.transform.position).magnitude < (Camera.main.transform.position - nearFace.transform.position).magnitude)
+            {
+                nearFace = face;
+            }
+        }
+
+        return nearFace;
+    }
+
     public static void BuildLevel(int level)
     {
 
     }
 
-    public static void TopButton()
-    {
-
-    }
 
     public static void ShowSelection()
     {
@@ -96,16 +114,16 @@ public class GameController : MonoBehaviour
         instance.selectButton.SetActive(false);
     }
 
-    public static void DiceSelect()
+    public static void DiceSelect(GameObject face)
     {
-        instance.obj?.OnSelect();
+        instance.obj.OnSelect(face);
     }
 
-    public static void AddPlayerDice(IDice dice)
+    public static void AddPlayerDice(PlayerDice dice)
     {
         instance.playerDiceList.Add(dice);
     }
-    public static void RemovePlayerDice(IDice dice)
+    public static void RemovePlayerDice(PlayerDice dice)
     {
         instance.playerDiceList.Remove(dice);
     }

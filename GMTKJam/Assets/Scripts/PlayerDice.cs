@@ -8,6 +8,7 @@ public enum DiceState
     idle,
     playing
 }
+[System.Serializable]
 public class PlayerDice : MonoBehaviour, IDice
 {
     //[SerializeField] Vector3[] faces;
@@ -16,6 +17,7 @@ public class PlayerDice : MonoBehaviour, IDice
     //private DiceState state = DiceState.idle;
     [SerializeField] Vector3 selectedPoint;
     [SerializeField] float speed;
+    [SerializeField] GameObject diceCam;
     float force;
 
 
@@ -23,6 +25,7 @@ public class PlayerDice : MonoBehaviour, IDice
     private BoxCollider cl;
     DiceState state = DiceState.playing;
     public bool selected;
+    GameObject upFace;
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +57,7 @@ public class PlayerDice : MonoBehaviour, IDice
             rb.isKinematic = true;
             cl.isTrigger = true;
             transform.DOMove(selectedPoint, speed);
-            transform.DORotateQuaternion(faces[0].look, speed);
+            transform.DORotateQuaternion(faces[System.Convert.ToInt16(upFace.name)].look, speed);
         }
         else if (state == DiceState.playing)
         {
@@ -81,11 +84,15 @@ public class PlayerDice : MonoBehaviour, IDice
         }
     }
 
-    public void OnSelect()
+    public void OnSelect(GameObject face)
     {
         //if(selected)
+        upFace = face;
         ChangeState(DiceState.idle);
 
+        
+
+        //Debug.Log(GameController.CheckFace());
 
     }
 }
